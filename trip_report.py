@@ -88,7 +88,9 @@ def main():
     gain = sum(max(0.0, b[3] - x[3]) for x, b in zip(tl, tl[1:]))
 
     try:
-        curve = tw.fetch_convective_forecast(clat, clon)
+        _ha = max(18, int((tl[-1][0] + __import__("datetime").timedelta(hours=9)
+                           - now).total_seconds() // 3600) + 1)
+        curve = tw.fetch_convective_forecast(clat, clon, hours_ahead=_ha)
     except Exception:
         try:
             curve = tw.fetch_nws_thunder(clat, clon)

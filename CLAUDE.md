@@ -287,3 +287,45 @@ examples/4pl-day-3-from-geneva8.gpx at 0.50 against the 0500 cycle; send
 the ONELINE. Day 4 (Thu) route: examples/4pl-day-4.gpx from Snowmass Lake
 over Buckskin Pass to Maroon Lake; build a from-actual-camp splice once
 Wed's camp fix arrives, and recalibrate pace with any Wed fixes first.
+
+## HRRR direct (added Wed 0330 MDT)
+
+hrrr_direct.py reads HRRR (3 km, hourly cycles) straight from the
+noaa-hrrr-bdp-pds bucket via .idx byte-range requests: CAPE, CIN, and the
+explicit LTNG hourly-max lightning-threat field at the nearest gridpoint.
+P = max(CAPE/CIN environmental ramp, LTNG ramp in ltng_to_p; both
+uncalibrated). fetch_convective_forecast now tries HRRR first for live
+runs, falling back to the Open-Meteo blend, then NWS thunder; replay
+still uses the Open-Meteo archive (HRRR AWS archive replay is a future
+upgrade). Requires pygrib (optional dep, like netCDF4/gmt).
+Gotcha: the newest cycle posts forecast hours progressively (~2 min apart,
+complete ~1 h 45 m after cycle time); fetch_hrrr_curve therefore backfills
+missing valid hours from the two prior cycles and tags each hour's src.
+
+Forecast fallback chain (hardened): fetch_convective_forecast fills the
+next-18h curve per hour: HRRR direct -> Open-Meteo blend -> NWS
+probabilityOfThunder -> linear interpolation across isolated single-hour
+gaps (src "interp"). Raises only if every source fails for every hour;
+callers treat that as curve=None and degrade to climatology/"unavailable".
+Every hour carries a src tag so any report can be audited for provenance.
+
+## Live verification log (Wed Aug 19)
+
+Day 3 executed and verified: 0627 start, Trail Rider by 0930 (her report),
+camp fix 1115 at 39.117861 -107.030160 (bench NW of Snowmass Lake; day-4
+route spliced from it in examples/4pl-day-4-from-camp.gpx). Three-fix
+calibration: climb 0.46, descent 0.58+, overall 0.51 - third consecutive
+day at 0.50 +/- 0.01. Afternoon: morning-assimilated cycles moved the peak
+to 1200-1300; first flashes within 15 mi of camp arrived ~1315 (model
+verified within ~20 min). Live tier ran NONE -> WATCH (1324, flash 20.6 km)
+-> WARNING (1329, flash 14.9 km) -> WATCH (1351, receding SE as vectors
+said). She was in camp 2 h before onset.
+
+Thursday watch item: long-cycle guidance sharpened the morning-loaded
+shape (onset 0900 at 0.37, peak 0.50 midday); from her actual camp a 0530
+start puts Buckskin at the onset hour, 0500 buys it back to ~0830 clear.
+Evening cycle decides the go time in tonight's oneline; final check 0430.
+
+Monitoring command (the future daemon loop, roadmap 7):
+python3 thunder_watch.py 0 0 --gpx examples/4pl-day-4-from-camp.gpx
+  --start-local 2026-08-20T05:30 --pace-factor 0.50

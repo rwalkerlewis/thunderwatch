@@ -337,10 +337,8 @@ def corridor_metrics(timeline, now, flashes):
     return d_now, d_corr
 
 
-def fetch_convective_forecast(lat, lon, date_utc=None):
-    """Hourly CAPE / CIN / precipitation probability for the route area from
-    Open-Meteo (archived model forecasts for replay dates, live forecast
-    otherwise). Returns {hour_utc: (cape, cin, pop_frac)} for the date."""
+def _fetch_openmeteo_curve(lat, lon, date_utc=None):
+    """Open-Meteo blend (live or archived) -> curve dict."""
     hourly = "cape,convective_inhibition,precipitation_probability"
     if date_utc is not None:
         d = date_utc.strftime("%Y-%m-%d")
@@ -370,6 +368,60 @@ def fetch_convective_forecast(lat, lon, date_utc=None):
         dt = datetime.strptime(t, "%Y-%m-%dT%H:%M").replace(tzinfo=timezone.utc)
         curve[dt] = {"p": hourly_lightning_prob(cape, cin, pop),
                      "cape": cape, "cin": cin, "pop": pop, "src": "open-meteo"}
+    return curve
+
+
+def fetch_convective_forecast(lat, lon, date_utc=None, hours_ahead=18):
+    """Hourly convective forecast curve, hardened per-hour fallback chain.
+    Live: HRRR direct first (3 km, explicit LTNG); any hours HRRR fails to
+    deliver (progressive uploads, per-field fetch dropouts) are filled from
+    the Open-Meteo blend, then NWS probabilityOfThunder, then linear
+    interpolation across isolated single-hour gaps (src tagged "interp").
+    Replay dates: Open-Meteo archive only. Raises only if every source
+    fails for every hour; callers treat that as curve=None."""
+    if date_utc is not None:
+        return _fetch_openmeteo_curve(lat, lon, date_utc)
+
+    now_h = datetime.now(timezone.utc).replace(minute=0, second=0,
+                                               microsecond=0)
+    need = [now_h + timedelta(hours=k) for k in range(hours_ahead + 1)]
+    curve = {}
+    try:
+        from hrrr_direct import fetch_hrrr_curve
+        curve.update(fetch_hrrr_curve(
+            lat, lon, hours_ahead=hours_ahead,
+            hourly_lightning_prob=hourly_lightning_prob))
+    except Exception:
+        pass
+    missing = [t for t in need if t not in curve]
+    if missing:
+        try:
+            blend = _fetch_openmeteo_curve(lat, lon)
+            for t in missing:
+                if t in blend:
+                    curve[t] = blend[t]
+        except Exception:
+            pass
+        missing = [t for t in need if t not in curve]
+    if missing:
+        try:
+            nws = fetch_nws_thunder(lat, lon)
+            for t in missing:
+                if t in nws:
+                    curve[t] = nws[t]
+        except Exception:
+            pass
+        missing = [t for t in need if t not in curve]
+    # isolated single-hour gaps: interpolate neighbors rather than report a
+    # false zero in the middle of an active afternoon
+    for t in list(missing):
+        lo, hi = curve.get(t - timedelta(hours=1)), curve.get(t + timedelta(hours=1))
+        if lo and hi:
+            curve[t] = {"p": round((lo["p"] + hi["p"]) / 2, 2),
+                        "cape": None, "cin": None, "pop": None,
+                        "src": "interp"}
+    if not curve:
+        raise RuntimeError("all forecast sources failed")
     return curve
 
 
@@ -500,7 +552,7 @@ def _crest_flags(timeline, window_km=1.2, tol_m=40.0):
 
 
 def hazard_profile(timeline, curve, utc_offset_h, step_min=15.0,
-                   camp_hours=3.0, treeline_m=TREELINE_M):
+                   camp_hours=9.0, treeline_m=TREELINE_M):
     """Exposure-weighted lightning hazard along the hiker's projected track:
     H(t) = P(lightning near route, hour of t) x exposure(position at t).
     Covers hike start through arrival plus camp_hours at camp. This is the
@@ -1195,8 +1247,11 @@ def main():
         c_lat = sum(p[1] for p in timeline) / len(timeline)
         c_lon = sum(p[2] for p in timeline) / len(timeline)
         try:
+            ha = max(18, int((timeline[-1][0] + timedelta(hours=9)
+                              - now).total_seconds() // 3600) + 1)
             curve = fetch_convective_forecast(
-                c_lat, c_lon, date_utc=now if replay else None)
+                c_lat, c_lon, date_utc=now if replay else None,
+                hours_ahead=ha)
         except Exception:
             curve = None
         if curve is None and not replay:
