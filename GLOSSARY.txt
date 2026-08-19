@@ -1,0 +1,101 @@
+THUNDERWATCH REPORT FIELD GUIDE
+================================
+
+Explains every field and abbreviation in the two report formats: the full
+trip report (trip_report.py) and the compact inReach report
+(inreach_report.py). Times are 24-hour, no colons (0530 = 5:30 AM local).
+A "+1" suffix means the following calendar day (0044+1 = 00:44 next day).
+Distances in miles, elevations in feet unless --units km is used.
+
+WHAT P MEANS
+------------
+P is the forecast probability of lightning occurring within about 15 km
+(9 mi) of the route during that clock hour. 15 km is strike range: a flash
+that close can hit you regardless of where the storm center is. P comes
+from one of two sources, whichever is reachable:
+  - Model environment (Open-Meteo blend of HRRR/GFS/ICON): hourly CAPE
+    (storm fuel), CIN (the cap suppressing storms), and precipitation
+    probability, converted to P by a terrain-tuned mapping. This mapping
+    is deliberately aggressive at low CAPE because high mountains trigger
+    storms in conditions that stay quiet over flat ground.
+  - NWS gridpoint "probability of thunder": the Weather Service's own
+    calibrated hourly thunder probability for the grid cell.
+P applies to the whole route corridor for that hour. It does NOT say where
+along the route the storm would be, and it is NOT conditioned on the
+hiker's location. Rough reading: 0.00-0.05 quiet, ~0.1 a stray weak cell
+is possible, 0.2-0.4 storms likely somewhere nearby, 0.5+ expect them.
+These numbers are not yet statistically calibrated; trust the shape (which
+hours, which days) more than the exact values.
+
+WHAT H (HAZARD) MEANS
+---------------------
+H = P for the hour x terrain exposure at the hiker's PROJECTED position at
+that time. This is the number that follows the hiker, not the weather.
+Exposure: 1.0 above treeline, sliding down to 0.35 in forest (trees reduce
+but do not remove lightning risk), with a bonus on passes and crests
+(local high points, nowhere to retreat). So the same P=0.4 hour reads
+H=0.40 on a pass but H=0.14 in deep timber.
+Bands: LOW < 0.15, MODERATE 0.15-0.35, HIGH 0.35-0.60, EXTREME >= 0.60.
+"pk haz" / "peak hazard" is the worst H moment of the whole day and when
+it occurs.
+
+TIMELINE
+--------
+Times come from a hiking-speed model (Tobler's function: speed depends on
+slope) scaled by the pace factor. Pace factor 0.7 = typical loaded
+backpacker; the factor in use is calibrated from the hiker's own observed
+splits, so timeline times are projections at demonstrated pace, breaks
+included. Landmarks:
+  start        departure point
+  Ps1, Ps2...  passes/crests, auto-detected local high points, with
+               elevation and the P for the hour of crossing (P0 = 0.00)
+  pk haz       moment of peak hazard H (see above)
+  sunset       computed for the route location, accurate to a few minutes;
+               includes the trail mile the hiker is projected to be at
+  end          end of route: distance and elevation
+In the full report each line also carries elevation (ft) and trail mile.
+
+LEAD SENTENCE (INREACH FORMAT)
+------------------------------
+The first sentence summarizes the hiker-following hazard H by hour:
+  "Hazard to you zero all hours."
+  "Hazard to you zero except 1600 hour at 0.08."
+  "Hazard to you: 0900-1359 at 0.35, 1800 hour at 0.42."
+Hours are local. Timeline entries carry H at each point (H0 = zero);
+pass lines in the full report show both H and the raw corridor P.
+The full report's hourly table has a P row (corridor) and an H row
+(follows the hiker); they differ when the hiker is below treeline or
+in camp during elevated hours. If the day runs far off schedule, the
+H row inherits the error - fall back to the P row.
+
+OTHER ABBREVIATIONS
+-------------------
+iss       issued (when the forecast was generated) - forecasts go stale;
+          a report issued the evening before is good, one from two days
+          ago is background only
+mi8.6     trail mile 8.6
+H0        hazard zero at that point and hour
+(+1)      next calendar day
+
+FULL-REPORT-ONLY FIELDS
+-----------------------
+ROUTE line     total distance, total climb, start/high/end elevations
+HAZARD line    peak H, band, time; whether passes cross at P=0
+CURRENT line   (when present) live conditions at issue time: number of
+               radar-tracked storm cells within 155 mi and satellite-
+               detected lightning flashes within 62 mi in the last 10 min.
+               Zeros here mean the region is quiet right now, which says
+               nothing about the afternoon.
+BOTTOM LINE    the one-sentence operational summary
+
+LIMITS TO KEEP IN MIND
+----------------------
+- Forecast skill decays with lead time. Same-morning reports are the real
+  product; 2-3 day reports show the pattern, not the hours.
+- P is one number for the whole corridor from one model grid cell. It
+  cannot say which basin or which pass a storm will pick.
+- The timeline is a pace projection. If actual travel runs ahead or behind,
+  every downstream time shifts with it, including which hours the exposed
+  crossings land in.
+- None of this replaces looking at the sky. Building cumulus by late
+  morning over the crests is information no report supersedes.

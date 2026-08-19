@@ -1,0 +1,9 @@
+Report key: times 24h no colons, 0044+1 = next day. Distances mi, elevations ft. P = lightning probability near route. H = hazard to you.
+
+P = chance of lightning within 9mi of route during that hour. Whole corridor, not one spot. 0-.05 quiet, .1 stray cell, .2-.4 likely, .5+ expect.
+
+H = P x terrain exposure at YOUR projected position then. Treeline full weight, forest a third, passes worst. H0 = zero. H follows you, P does not.
+
+First line gives hazard by hour, e.g. zero except 1600 hour at 0.08 = clear all day but 1600-1659. Pass lines show H and raw P both.
+
+Bands: LOW under .15, MOD to .35, HIGH to .6, EXTREME above. Sunset line = trail mile where dark catches you. Trust shape, not exact values.

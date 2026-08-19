@@ -1,0 +1,8 @@
+runs/
+maps/
+dem/
+__pycache__/
+*.png
+*.gif
+*.zip
+.gmt/

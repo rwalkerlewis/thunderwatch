@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="details.xsl"?>
+<gpx
+ version="1.1"
+ creator="GaiaGPS for Android"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.topografix.com/GPX/1/1"
+ xmlns:topografix="http://www.topografix.com/GPX/Private/TopoGrafix/0/1"
+ xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/Private/TopoGrafix/0/1 http://www.topografix.com/GPX/Private/TopoGrafix/0/1/topografix.xsd">
+<rte>
+<name><![CDATA[to geneva cutover]]></name>
+<desc></desc>
+<number>96</number>
+<extensions>
+<line xmlns="http://www.topografix.com/GPX/gpx_style/0/2">
+<color>A726BC</color>
+</line>
+</extensions>
+<rtept lat="39.088664" lon="-107.05609">
+<ele>3133.8</ele>
+<type>route</type>
+</rtept>
+<rtept lat="39.088676" lon="-107.056078">
+<ele>3133.8</ele>
+</rtept>
+<rtept lat="39.088686" lon="-107.056095">
+<ele>3133.8</ele>
+</rtept>
+<rtept lat="39.08886" lon="-107.056396">
+<ele>3135.4</ele>
+</rtept>
+<rtept lat="39.089119" lon="-107.056535">
+<ele>3140.6</ele>
+</rtept>
+<rtept lat="39.089377" lon="-107.056718">
+<ele>3147</ele>
+</rtept>
+<rtept lat="39.089518" lon="-107.056986">
+<ele>3148</ele>
+</rtept>
+<rtept lat="39.089635" lon="-107.056997">
+<ele>3152.4</ele>
+</rtept>
+<rtept lat="39.089851" lon="-107.056739">
+<ele>3162.6</ele>
+</rtept>
+<rtept lat="39.089968" lon="-107.05705">
+<ele>3166.6</ele>
+</rtept>
+<rtept lat="39.090035" lon="-107.057168">
+<ele>3169.6</ele>
+</rtept>
+<rtept lat="39.09011" lon="-107.057233">
+<ele>3172.6</ele>
+</rtept>
+<rtept lat="39.090218" lon="-107.057115">
+<ele>3182</ele>
+</rtept>
+<rtept lat="39.090243" lon="-107.057437">
+<ele>3182.4</ele>
+</rtept>
+<rtept lat="39.090501" lon="-107.05778">
+<ele>3197.8</ele>
+</rtept>
+<rtept lat="39.090543" lon="-107.058027">
+<ele>3187</ele>
+</rtept>
+<rtept lat="39.090842" lon="-107.058305">
+<ele>3214.6</ele>
+</rtept>
+<rtept lat="39.090951" lon="-107.058627">
+<ele>3213.4</ele>
+</rtept>
+<rtept lat="39.091191" lon="-107.059021">
+<ele>3232.6</ele>
+</rtept>
+<rtept lat="39.09115" lon="-107.058788">
+<ele>3227.8</ele>
+</rtept>
+<rtept lat="39.091225" lon="-107.058445">
+<ele>3241.4</ele>
+</rtept>
+<rtept lat="39.091208" lon="-107.058173">
+<ele>3242.2</ele>
+</rtept>
+<rtept lat="39.091359" lon="-107.058456">
+<ele>3250.6</ele>
+</rtept>
+<rtept lat="39.091442" lon="-107.058574">
+<ele>3259.2</ele>
+</rtept>
+<rtept lat="39.09165" lon="-107.059389">
+<ele>3268.2</ele>
+</rtept>
+<rtept lat="39.091924" lon="-107.059997">
+<ele>3277</ele>
+</rtept>
+<rtept lat="39.092016" lon="-107.060244">
+<ele>3274.4</ele>
+</rtept>
+<rtept lat="39.092082" lon="-107.060608">
+<ele>3270.8</ele>
+</rtept>
+<rtept lat="39.092258" lon="-107.061149">
+<ele>3277.2</ele>
+</rtept>
+<rtept lat="39.09239" lon="-107.061596">
+<ele>3280</ele>
+</rtept>
+<rtept lat="39.092566" lon="-107.061975">
+<ele>3294.4</ele>
+</rtept>
+<rtept lat="39.092616" lon="-107.062232">
+<ele>3291.8</ele>
+</rtept>
+<rtept lat="39.092682" lon="-107.062389">
+<ele>3298.2</ele>
+</rtept>
+<rtept lat="39.092841" lon="-107.062425">
+<ele>3311.8</ele>
+</rtept>
+<rtept lat="39.092907" lon="-107.062597">
+<ele>3314.4</ele>
+</rtept>
+<rtept lat="39.093066" lon="-107.062651">
+<ele>3319.6</ele>
+</rtept>
+<rtept lat="39.093132" lon="-107.062951">
+<ele>3317.6</ele>
+</rtept>
+<rtept lat="39.093324" lon="-107.063112">
+<ele>3328.4</ele>
+</rtept>
+<rtept lat="39.09339" lon="-107.063377">
+<ele>3330.8</ele>
+</rtept>
+<rtept lat="39.093649" lon="-107.063573">
+<ele>3339.6</ele>
+</rtept>
+<rtept lat="39.093947" lon="-107.064406">
+<ele>3343.4</ele>
+</rtept>
+<rtept lat="39.094048" lon="-107.064324">
+<ele>3354.2</ele>
+</rtept>
+<rtept lat="39.094222" lon="-107.063677">
+<ele>3375</ele>
+</rtept>
+<rtept lat="39.094298" lon="-107.06367">
+<ele>3384.8</ele>
+</rtept>
+<rtept lat="39.09439" lon="-107.063874">
+<ele>3387</ele>
+</rtept>
+<rtept lat="39.094464" lon="-107.063745">
+<ele>3392.2</ele>
+</rtept>
+<rtept lat="39.094456" lon="-107.063445">
+<ele>3394.4</ele>
+</rtept>
+<rtept lat="39.094598" lon="-107.063466">
+<ele>3402.6</ele>
+</rtept>
+<rtept lat="39.094839" lon="-107.063831">
+<ele>3397.2</ele>
+</rtept>
+<rtept lat="39.095022" lon="-107.063563">
+<ele>3413</ele>
+</rtept>
+<rtept lat="39.095097" lon="-107.063327">
+<ele>3420.4</ele>
+</rtept>
+<rtept lat="39.095455" lon="-107.063198">
+<ele>3431.2</ele>
+</rtept>
+<rtept lat="39.095489" lon="-107.063037">
+<ele>3440.6</ele>
+</rtept>
+<rtept lat="39.095889" lon="-107.063016">
+<ele>3446.4</ele>
+</rtept>
+<rtept lat="39.096113" lon="-107.062747">
+<ele>3461</ele>
+</rtept>
+<rtept lat="39.096122" lon="-107.062618">
+<ele>3468.6</ele>
+</rtept>
+<rtept lat="39.096862" lon="-107.062513">
+<ele>3477.4</ele>
+</rtept>
+<rtept lat="39.097024" lon="-107.062426">
+<ele>3479.8</ele>
+</rtept>
+<rtept lat="39.097033" lon="-107.06249">
+<ele>3481.8</ele>
+<type>route</type>
+</rtept>
+</rte>
+</gpx>
